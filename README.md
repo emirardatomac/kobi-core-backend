@@ -71,6 +71,7 @@ GET /dashboard/summary
 📚 Dokümantasyon
 Swagger UI: /docs
 OpenAPI: otomatik FastAPI schema
+
 🎯 Core Backend Çıktısı
 ✅ Production-ready API
 ✅ Database schema + migrations
@@ -144,6 +145,7 @@ Stok tükenme riski analizi
 Sipariş durum takibi
 Kargo gecikme tahmini
 Otomatik aksiyon önerileri
+
 🎯 AI Backend Çıktısı
 ✅ Fully working /chat endpoint
 ✅ Gemini integration
@@ -157,6 +159,7 @@ GET /orders/{id}
 GET /inventory/critical
 GET /cargo/{id}
 GET /dashboard/summary
+
 🚀 Çalışma Akışı
 1. Kullanıcı Mesajı
 Siparişim nerede?
@@ -176,6 +179,7 @@ Siparişiniz hazırlanıyor ve kargoya verilmek üzere.
 Sistem şu akışı başarıyla çalıştırır:
 
 User → AI → Backend → AI → User
+
 💡 Engineering Notes
 Core backend tamamen bağımsız çalışır
 AI backend stateless tasarlanmıştır
