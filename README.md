@@ -1,36 +1,183 @@
-# KOBI Command Center - Core API
+🧠 KOBI AI Service
 
-Bu proje, KOBİ'ler için geliştirilen yapay zeka destekli operasyon merkezinin (KOBI Command Center) Core Backend servisidir. Sipariş, stok ve kargo yönetimini tek bir merkezde toplar ve AI ajanının (Gemini) kararlar alabilmesi için gerekli veri altyapısını sağlar.
+KOBI AI Service, küçük ve orta ölçekli işletmeler için geliştirilmiş gerçek zamanlı operasyon yönetim ve AI karar destek sistemidir.
 
-## Teknolojiler
-* Framework: FastAPI
-* Veritabanı: SQLite & SQLAlchemy
-* Veri Doğrulama: Pydantic
-* Dil: Python 3.x
+Sistem; sipariş, stok, kargo ve müşteri verilerini tek bir backend üzerinde yönetirken, üst katmanda Gemini destekli bir AI agent ile doğal dil üzerinden operasyon kontrolü sağlar.
 
-## Kurulum ve Çalıştırma (Takım Arkadaşım İçin Notlar)
+🏗️ Sistem Mimarisi
+Frontend
+   ↓
+AI Backend (Gemini Agent + Tool Orchestration)
+   ↓
+Core Backend (FastAPI Business API)
+   ↓
+SQLite / PostgreSQL (Production-ready yapı)
 
-Projeyi bilgisayarına çektikten sonra şu adımları izleyerek ayağa kaldırabilirsin:
+🧱 Core Backend (System of Record)
 
-1. Sanal ortamı oluştur ve aktif et:
-python -m venv venv
-Windows için: venv\Scripts\activate
-Mac/Linux için: source venv/bin/activate
+Core Backend, tüm iş verisinin ve operasyonel mantığın merkezi katmanıdır.
 
-2. Gerekli kütüphaneleri (bağımlılıkları) kur:
-pip install -r requirements.txt
+🛠️ Teknolojiler
+FastAPI
+SQLAlchemy
+Pydantic
+SQLite (dev) / PostgreSQL (prod uyumlu yapı)
 
-3. Sistemi başlat:
-uvicorn main:app --reload
+📁 Proje Yapısı
+app/
+ ├── main.py
+ ├── routes/
+ ├── models/
+ ├── schemas/
+ ├── services/
+ ├── database/
+ └── utils/
+ 
+🗄️ Veri Modelleri
+📦 Orders
+id
+customer
+status
+📦 Inventory
+id
+product
+stock
+🚚 Cargo
+id
+tracking_id
+status
+👤 Customers
+müşteri bilgileri ve ilişkisel veriler
+⚙️ Business Logic
 
-(Not: Sistemi ilk çalıştırdığında kobi_command.db dosyası otomatik oluşacak ve içine test verileri (mock data) basılacaktır.)
+Sistem tamamen gerçek veriler üzerinden çalışır.
 
-## API Portları (AI Agent İçin Tool Entegrasyon Noktaları)
-Sistem çalıştığında http://127.0.0.1:8000/docs adresinden tüm endpointleri Swagger üzerinden test edebilirsin.
+Örnek kritik iş kuralı:
 
-Gemini Tool Calling için kullanabileceğin ana portlar:
-* GET /api/v1/orders - Tüm siparişleri getirir.
-* GET /api/v1/orders/{id} - Tekil sipariş detayını getirir.
-* GET /api/v1/inventory/critical - Stok seviyesi 10'un altında olan kritik ürünleri listeler.
-* GET /api/v1/cargo/{tracking_id} - Kargo durumunu sorgular.
-* GET /api/v1/dashboard/summary - Sistemin genel özetini (toplam sipariş, kritik stok sayısı vb.) döner.
+if stock < 10:
+    mark_as_critical(product_id)
+🔌 API Endpoints
+📦 Orders
+GET /orders
+GET /orders/{id}
+POST /orders
+📦 Inventory
+GET /inventory
+GET /inventory/critical
+🚚 Cargo
+GET /cargo/{tracking_id}
+📊 Analytics
+GET /dashboard/summary
+📚 Dokümantasyon
+Swagger UI: /docs
+OpenAPI: otomatik FastAPI schema
+🎯 Core Backend Çıktısı
+✅ Production-ready API
+✅ Database schema + migrations
+✅ Seed data (ilk kurulum verisi)
+✅ Business rule engine
+✅ Swagger documentation
+🤖 AI Backend (Intelligence Layer)
+
+AI Backend, sistemin doğal dil ile kontrol edilmesini sağlayan agent katmanıdır.
+
+🛠️ Teknolojiler
+Python
+Google Gemini
+FastAPI
+Tool Calling Architecture
+💬 AI Endpoint
+POST /chat
+
+Kullanıcıdan gelen tüm doğal dil istekleri bu endpoint üzerinden işlenir.
+
+🧠 System Prompt (Çekirdek Davranış)
+
+AI agent şu rol ile çalışır:
+
+Sen KOBİ operasyon yöneticisisin.
+Sipariş, stok ve kargo verilerine erişerek karar verirsin.
+Gerekirse tool çağrısı yaparak backend sistemden veri çekersin.
+🔍 Intent Detection
+
+Kullanıcı mesajı analiz edilerek niyet çıkarılır:
+
+Örnek
+
+Input:
+
+128 numaralı sipariş nerede?
+
+Output:
+
+{
+  "intent": "track_order",
+  "order_id": "128"
+}
+🔧 Tool Architecture
+
+Gemini, ihtiyaç duyduğunda aşağıdaki tool’ları seçer:
+
+get_order_status(order_id)
+get_inventory_status(product_id)
+get_cargo_status(tracking_id)
+get_dashboard_summary()
+⚙️ Tool Execution Flow
+User Message
+   ↓
+Gemini (decision layer)
+   ↓
+Tool selection
+   ↓
+Core Backend API call
+   ↓
+Raw data response
+   ↓
+Gemini final response generation
+📊 AI Output Examples
+“Siparişiniz kargoya verilmiş durumda.”
+“3 ürün stok kritik seviyede.”
+“Bugün operasyonel olarak 2 risk tespit edildi.”
+📈 Intelligence Features
+Operasyonel özet üretme
+Stok tükenme riski analizi
+Sipariş durum takibi
+Kargo gecikme tahmini
+Otomatik aksiyon önerileri
+🎯 AI Backend Çıktısı
+✅ Fully working /chat endpoint
+✅ Gemini integration
+✅ Tool calling system
+✅ Context-aware response engine
+🔗 Backend Entegrasyon Noktaları
+
+AI layer şu Core API’leri kullanır:
+
+GET /orders/{id}
+GET /inventory/critical
+GET /cargo/{id}
+GET /dashboard/summary
+🚀 Çalışma Akışı
+1. Kullanıcı Mesajı
+Siparişim nerede?
+2. AI Decision
+Intent: tracking
+Tool: get_order_status
+3. Backend Call
+GET /orders/128
+4. Response Processing
+
+AI veriyi yorumlar ve insan diline çevirir.
+
+5. Final Output
+Siparişiniz hazırlanıyor ve kargoya verilmek üzere.
+🧪 Demo Senaryosu
+
+Sistem şu akışı başarıyla çalıştırır:
+
+User → AI → Backend → AI → User
+💡 Engineering Notes
+Core backend tamamen bağımsız çalışır
+AI backend stateless tasarlanmıştır
+Tool layer genişletilebilir mimaridedir
+Yeni endpoint eklemek AI sistemini otomatik güçlendirir
